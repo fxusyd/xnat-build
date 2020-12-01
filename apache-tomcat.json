@@ -1,0 +1,60 @@
+{
+  "variables": {
+    "tomcat_version": "7.0.103"
+  },
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "echo -n 'Waiting for network...'",
+        "while ! $(systemctl --quiet is-enabled network-online.target); do sleep 1; done && echo 'FINISHED'",
+        "echo -n 'Waiting for cloud-init...'",
+        "cloud-init status --wait &>/dev/null && echo 'FINISHED'"
+      ],
+      "only": [ "lxd" ]
+    },
+
+    { "source": "apache-tomcat-{{user `tomcat_version`}}.tar.gz", "destination": "/tmp/apache-tomcat-{{user `tomcat_version`}}.tar.gz", "type": "file" },
+
+    {
+      "type": "shell",
+      "environment_vars": [
+        "DEBIAN_FRONTEND=noninteractive"
+      ],
+      "inline": [
+        "apt-get update",
+        "apt-get -y install openjdk-8-jdk-headless",
+        "apt-get clean",
+        "useradd -c 'Apache Tomcat' -d / -M -r -s /usr/sbin/nologin -U tomcat",
+        "tar xzf /tmp/apache-tomcat-{{user `tomcat_version`}}.tar.gz -C/opt",
+        "ln -sr /opt/apache-tomcat-{{user `tomcat_version`}} /opt/tomcat7",
+        "ln -sr /opt/apache-tomcat-{{user `tomcat_version`}} /opt/tomcat",
+        "chown -R tomcat /opt/apache-tomcat-{{user `tomcat_version`}}",
+        "rm -f /tmp/apache-tomcat-{{user `tomcat_version`}}.tar.gz"
+      ]
+    },
+
+    { "source": "tomcat.service", "destination": "/etc/systemd/system/tomcat.service", "type": "file", "only": [ "lxd" ] },
+
+    {
+      "type": "shell",
+      "inline": [
+        "systemctl daemon-reload",
+        "systemctl enable tomcat.service"
+      ],
+      "only": [ "lxd" ]
+    }
+  ],
+
+  "builders": [
+    {
+      "type": "lxd",
+      "image": "ubuntu:16.04",
+      "output_image": "tomcat7",
+      "publish_properties": {
+        "description": "Apache Tomcat 7"
+      }
+    }
+  ]
+}

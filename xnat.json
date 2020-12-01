@@ -1,0 +1,118 @@
+{
+  "variables": {
+    "xnat_version": "1.7.6",
+    "xnat_root": "/data/xnat",
+    "xnat_home": "/data/xnat/home",
+    "xnat_plugins": "/data/xnat/home/plugins"
+  },
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "environment_vars": [
+        "DEBIAN_FRONTEND=noninteractive"
+      ],
+      "inline": [
+        "echo -n 'Waiting for network...'",
+        "while ! $(systemctl --quiet is-enabled network-online.target); do sleep 1; done && echo 'FINISHED'",
+        "echo -n 'Waiting for cloud-init...'",
+        "cloud-init status --wait &>/dev/null && echo 'FINISHED'",
+        "flock /var/lib/apt/daily_lock apt-get update",
+        "flock /var/lib/apt/daily_lock apt-get -y install unzip"
+      ],
+      "only": [ "lxd" ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir -p /data/xnat/{archive,build,cache,ftp,inbox,prearchive,pipeline}",
+        "mkdir -p {{user `xnat_home`}}/{config,logs,plugins,work}",
+        "mkdir -p {{user `xnat_home`}}/config/auth"
+      ],
+      "inline_shebang": "/bin/bash -e"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir -p /docker-entrypoint.d"
+      ],
+      "only": ["docker"]
+    },
+
+    { "source": "setenv.sh", "destination": "/tmp/setenv.sh", "type": "file" },
+    { "source": "xnat-conf.properties", "destination": "{{user `xnat_home`}}/config/xnat-conf.properties", "type": "file", "only": ["lxd"] },
+    { "source": "xnat-web-{{user `xnat_version`}}.war", "destination": "/tmp/xnat-web-{{user `xnat_version`}}.war", "type": "file" },
+    { "source": "xnat-pipeline-engine", "destination": "/data", "type": "file", "only": ["lxd"] },
+
+    { "source": "xnat-ldap-auth-plugin-1.0.0.jar", "destination": "{{user `xnat_plugins`}}/xnat-ldap-auth-plugin-1.0.0.jar", "type": "file" },
+    { "source": "openid-auth-plugin-1.0.0-20190409.122010-10.jar", "destination": "{{user `xnat_plugins`}}/openid-auth-plugin-1.0.0-20190409.122010-10.jar", "type": "file" },
+
+    { "source": "gradle.properties", "destination": "/data/xnat-pipeline-engine/gradle.properties", "type": "file", "only": ["lxd"] },
+
+    { "source": "docker-entrypoint.sh", "destination": "/docker-entrypoint.sh", "type": "file", "only": [ "docker" ] },
+    { "source": "docker-entrypoint.d/", "destination": "/docker-entrypoint.d", "type": "file", "only": [ "docker" ] },
+
+    {
+      "type": "shell",
+      "inline": [
+        "mv /tmp/setenv.sh ${CATALINA_HOME:-/opt/tomcat}/bin/setenv.sh",
+        "[ -d ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT ] && rm -rf ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT",
+        "mkdir ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT",
+        "unzip -o -d ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT /tmp/xnat-web-{{user `xnat_version`}}.war",
+        "[ -d /data/xnat-pipeline-engine ] && cd /data/xnat-pipeline-engine && ./gradlew --quiet && cd",
+        "chmod +x ${CATALINA_HOME:-/opt/tomcat}/bin/setenv.sh",
+        "[ -f /docker-entrypoint.sh ] && chmod 0555 /docker-entrypoint.sh && chown root:root /docker-entrypoint.sh",
+        "[ -d /docker-entrypoint.d ] && chown -R root:root /docker-entrypoint.d",
+        "rm -f /tmp/xnat-web-{{user `xnat_version`}}.war /tmp/setenv.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "chown -R tomcat /data/xnat",
+        "chown -R tomcat ${CATALINA_HOME:-/opt/tomcat}"
+      ],
+      "only": [ "lxd" ]
+    }
+  ],
+
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "localhost:32000/xnat",
+        "tag": "{{user `xnat_version`}}",
+        "only": [ "docker" ]
+      },
+      {
+        "type": "docker-tag",
+        "repository": "registry.gitlab.com/cerds/xnat-deploy",
+        "tag": "{{user `xnat_version`}}",
+        "only": [ "docker" ]
+      }
+    ]
+  ],
+
+  "builders": [
+    {
+      "type": "lxd",
+      "image": "tomcat7",
+      "output_image": "xnat-1.7.4.1",
+      "publish_properties": {
+        "description": "XNAT - Open source imaging informatics"
+      }
+    },
+    {
+      "type": "docker",
+      "image": "tomcat:7-jre8-alpine",
+      "commit": true,
+      "changes": [
+        "CMD [\"bin/catalina.sh\",\"run\"]",
+        "ENTRYPOINT [\"/docker-entrypoint.sh\"]",
+        "ENV XNAT_HOME={{user `xnat_home`}}",
+        "LABEL maintainer=\"Dean Taylor <dean.taylor@uwa.edu.au>\"",
+        "VOLUME /data/xnat/archive /data/xnat/cache /data/xnat/prearchive {{user `xnat_home`}}/work {{user `xnat_home`}}/logs"
+      ]
+    }
+  ]
+}

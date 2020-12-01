@@ -1,0 +1,6 @@
+.*.swp
+*.tar.gz
+*.war
+xnat-pipeline-engine/
+*-auth-plugin-*.jar*
+/.state_*
