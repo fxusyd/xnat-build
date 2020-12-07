@@ -26,7 +26,7 @@
       "type": "shell",
       "inline": [
         "mkdir -p /data/xnat/{archive,build,cache,ftp,inbox,prearchive,pipeline}",
-        "mkdir -p {{user `xnat_home`}}/{config,logs,plugins,work}",
+        "mkdir -p {{user `xnat_home`}}/{config,plugins,work}",
         "mkdir -p {{user `xnat_home`}}/config/auth"
       ],
       "inline_shebang": "/bin/bash -e"
@@ -112,7 +112,7 @@
         "ENTRYPOINT [\"/docker-entrypoint.sh\"]",
         "ENV XNAT_HOME={{user `xnat_home`}}",
         "LABEL maintainer=\"Dean Taylor <dean.taylor@uwa.edu.au>\"",
-        "VOLUME /data/xnat/archive /data/xnat/cache /data/xnat/prearchive {{user `xnat_home`}}/work {{user `xnat_home`}}/logs"
+        "VOLUME /data/xnat/archive /data/xnat/cache /data/xnat/prearchive {{user `xnat_home`}}/work"
       ]
     }
   ]
