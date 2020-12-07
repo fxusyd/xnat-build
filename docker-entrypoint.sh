@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+
 echo "/docker-entrypoint.sh start..."
 
 # Source files in docker-entrypoint.d/ dump directory
