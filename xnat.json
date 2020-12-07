@@ -59,6 +59,7 @@
         "[ -d ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT ] && rm -rf ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT",
         "mkdir ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT",
         "unzip -o -d ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT /tmp/xnat-web-{{user `xnat_version`}}.war",
+        "sed -i s/ch.qos.logback.core.rolling.RollingFileAppender/ch.qos.logback.core.ConsoleAppender/g ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT/WEB-INF/classes/logback.xml",
         "[ -d /data/xnat-pipeline-engine ] && cd /data/xnat-pipeline-engine && ./gradlew --quiet && cd",
         "chmod +x ${CATALINA_HOME:-/opt/tomcat}/bin/setenv.sh",
         "[ -f /docker-entrypoint.sh ] && chmod 0555 /docker-entrypoint.sh && chown root:root /docker-entrypoint.sh",
