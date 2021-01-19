@@ -44,8 +44,8 @@
     { "source": "xnat-web-{{user `xnat_version`}}.war", "destination": "/tmp/xnat-web-{{user `xnat_version`}}.war", "type": "file" },
     { "source": "xnat-pipeline-engine", "destination": "/data", "type": "file", "only": ["lxd"] },
 
-    { "source": "xnat-ldap-auth-plugin-1.0.0.jar", "destination": "{{user `xnat_plugins`}}/xnat-ldap-auth-plugin-1.0.0.jar", "type": "file" },
-    { "source": "openid-auth-plugin-1.0.0-20190409.122010-10.jar", "destination": "{{user `xnat_plugins`}}/openid-auth-plugin-1.0.0-20190409.122010-10.jar", "type": "file" },
+    { "source": "xnat-ldap-auth-plugin-1.0.0.jar", "destination": "{{user `xnat_plugins`}}/ldap-auth-plugin.jar", "type": "file" },
+    { "source": "xnat-openid-auth-plugin-all-1.0.2.jar", "destination": "{{user `xnat_plugins`}}/openid-auth-plugin.jar", "type": "file" },
 
     { "source": "gradle.properties", "destination": "/data/xnat-pipeline-engine/gradle.properties", "type": "file", "only": ["lxd"] },
 

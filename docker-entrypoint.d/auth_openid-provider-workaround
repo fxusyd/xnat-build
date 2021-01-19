@@ -4,6 +4,6 @@
 if ls "${XNAT_HOME}/plugins/openid-auth-plugin"* >/dev/null 2>&1 && ! [ -f "${XNAT_HOME}/config/auth/openid-provider.properties" ] ; then
 
 echo "${XNAT_HOME}/plugins/openid-auth-plugin is being removed (temporary workaround)"
-rm -f "${XNAT_HOME}/plugins/openid-auth-plugin-"*
+rm -f "${XNAT_HOME}/plugins/openid-auth-plugin"*
 
 fi
