@@ -56,7 +56,8 @@
       "type": "shell",
       "inline": [
         "mv /tmp/setenv.sh ${CATALINA_HOME:-/opt/tomcat}/bin/setenv.sh",
-        "[ -d ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT ] && rm -rf ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT",
+        "# Remove all WAR deployments from webapps folder inc. the manager and docs",
+        "[ -d ${CATALINA_HOME:-/opt/tomcat}/webapps ] && rm -rf ${CATALINA_HOME:-/opt/tomcat}/webapps/*",
         "mkdir ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT",
         "unzip -o -d ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT /tmp/xnat-web-{{user `xnat_version`}}.war",
         "sed -i s/ch.qos.logback.core.rolling.RollingFileAppender/ch.qos.logback.core.ConsoleAppender/g ${CATALINA_HOME:-/opt/tomcat}/webapps/ROOT/WEB-INF/classes/logback.xml",
