@@ -84,6 +84,7 @@ build {
       "apt-get -y install postgresql-client",
       "rm -rf $${CATALINA_HOME}/webapps/*",
       "unzip -o -d $${CATALINA_HOME}/webapps/ROOT /tmp/xnat-web-*.war",
+      "sed -i 's/ch.qos.logback.core.rolling.RollingFileAppender/ch.qos.logback.core.ConsoleAppender/' $${CATALINA_HOME}/webapps/ROOT/WEB-INF/classes/logback.xml",
       "cp /tmp/packer_files/setenv.sh $${CATALINA_HOME}/bin/setenv.sh && chmod 0555 $${CATALINA_HOME}/bin/setenv.sh",
       "find ${var.xnat_home}/config ${var.xnat_plugins} -type d -exec chmod 0755 {} \\; && find ${var.xnat_plugins} -type f -exec chmod 0644 {} \\; && chown -R root:root ${var.xnat_home}/config ${var.xnat_plugins}",
       "[ -f /docker-entrypoint.sh ] && chmod 0755 /docker-entrypoint.sh",
