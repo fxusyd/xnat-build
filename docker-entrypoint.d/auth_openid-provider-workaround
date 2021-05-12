@@ -1,9 +1,0 @@
-# WORKAROUND: openid-auth-plugin code alterations are required to allow appropriate disable functionality
-# The plugin needs to be removed from the plugins directory to ansure clean disable of this feature
-
-if ls "${XNAT_HOME}/plugins/openid-auth-plugin"* >/dev/null 2>&1 && ! [ -f "${XNAT_HOME}/config/auth/openid-provider.properties" ] ; then
-
-echo "${XNAT_HOME}/plugins/openid-auth-plugin is being removed (temporary workaround)"
-rm -f "${XNAT_HOME}/plugins/openid-auth-plugin"*
-
-fi

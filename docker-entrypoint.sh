@@ -1,9 +1,3 @@
 #!/usr/bin/env bash
-
-echo "/docker-entrypoint.sh start..."
-
-# Source files in docker-entrypoint.d/ dump directory
-IFS=$'\n' eval 'for f in $(find /docker-entrypoint.d/ -type f -print |sort); do source ${f}; done'
-
-echo "CMD $@"
+[ -d /docker-entrypoint.d ] && IFS=$'\n' eval 'for f in $(find /docker-entrypoint.d/ -type f -print |sort); do source ${f}; done'
 exec $@

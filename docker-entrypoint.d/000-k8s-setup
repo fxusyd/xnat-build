@@ -1,8 +1,0 @@
-# Move auth configuration into /data/xnat/home/config/auth
-# ISSUE XNAT auth code recursivley searches for configuration and follows the symlinks produced by the Secret volume mount
-AUTH_PATH="${XNAT_HOME}/config/auth"
-CONFIG_PATH="${XNAT_HOME}/config"
-K8S_PATH='/k8s-secrets'
-
-[ -d "${K8S_PATH}/config" ] && cp -L "${K8S_PATH}/config/"* $CONFIG_PATH
-[ -d "${K8S_PATH}/auth" ]   && cp -L "${K8S_PATH}/auth/"*"-provider.properties" $AUTH_PATH

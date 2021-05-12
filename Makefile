@@ -1,43 +1,35 @@
-all : .state_xnat-web-lxd .state_xnat-web-docker
+xnat_version = 1.8.1
+xnat_ver_17 = 1.7.6
+plugin_ldap_auth_ver = 1.1.0
+plugin_openid_auth_ver = 1.0.2
 
-xnat_web_ver = 1.7.6
-XNAT := xnat.json setenv.sh xnat-web-1.7.6.war openid-auth-plugin-1.0.0.jar xnat-ldap-auth-plugin-1.0.0.jar
+xnat_war = xnat-web-$(xnat_version).war
+xnat_url = https://bitbucket.org/xnatdev/xnat-web/downloads/$(xnat_war)
+xnat_war_17 = xnat-web-$(xnat_ver_17).war
+xnat_url_17 = https://bitbucket.org/xnatdev/xnat-web/downloads/$(xnat_war_17)
+plugin_ldap_auth_jar = ldap-auth-plugin-$(plugin_ldap_auth_ver).jar
+plugin_ldap_auth_url = https://bitbucket.org/xnatx/ldap-auth-plugin/downloads/ldap-auth-plugin-1.1.0.jar
+plugin_openid_auth_jar = openid-auth-plugin-$(plugin_openid_auth_ver).jar
+plugin_openid_auth_url = https://github.com/Australian-Imaging-Service/xnat-openid-auth-plugin/releases/download/$(plugin_openid_auth_ver)/xnat-openid-auth-plugin-all-$(plugin_openid_auth_ver).jar
+#plugin_openid_auth_url = http://dev.redboxresearchdata.com.au/nexus/service/local/repositories/snapshots/content/au/edu/qcif/xnat/openid/openid-auth-plugin/$(plugin_openid_auth_ver)-SNAPSHOT/openid-auth-plugin-$(plugin_openid_auth_ver)-20190409.122010-10.jar
 
-.PHONY : prep-docker
-prep-docker: xnat-web-1.7.6.war
+all : $(xnat_war) $(xnat_war_17)
 
-.state_xnat-web-lxd : $(XNAT) .state_tomcat-lxd xnat-pipeline-engine xnat-conf.properties
-	packer build -only=lxd xnat.json
-	touch .state_xnat-web-lxd
+$(xnat_war) : $(plugin_ldap_auth_jar) $(plugin_openid_auth_jar)
+	wget --no-verbose -O $(xnat_war) $(xnat_url)
 
-.state_xnat-web-docker : $(XNAT)
-	packer build -only=docker xnat.json
-	touch .state_xnat-web-docker
+$(xnat_war_17) : $(plugin_ldap_auth_jar) $(plugin_openid_auth_jar)
+	wget --no-verbose -O $(xnat_war_17) $(xnat_url_17)
 
-.state_tomcat-lxd : apache-tomcat-7.0.103.tar.gz apache-tomcat.json tomcat.service
-	packer build -only=lxd apache-tomcat.json
-	touch .state_tomcat-lxd
+$(plugin_ldap_auth_jar) :
+	wget --no-verbose -O $(plugin_ldap_auth_jar) $(plugin_ldap_auth_url)
 
-xnat-web-1.7.6.war :
-	curl -L -o./xnat-web-$(xnat_web_ver).war https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-web/downloads/xnat-web-$(xnat_web_ver).war
-
-xnat-pipeline-engine :
-	git clone https://www.github.com/nrgXnat/xnat-pipeline-engine.git
-
-openid-auth-plugin-1.0.0.jar :
-	wget -P./ 'http://dev.redboxresearchdata.com.au/nexus/service/local/repositories/snapshots/content/au/edu/qcif/xnat/openid/openid-auth-plugin/1.0.0-SNAPSHOT/openid-auth-plugin-1.0.0-20190409.122010-10.jar'
-	ln -s openid-auth-plugin-1.0.0-20190409.122010-10.jar openid-auth-plugin-1.0.0.jar
-xnat-ldap-auth-plugin-1.0.0.jar :
-	wget -P./ 'https://bitbucket.org/xnatx/ldap-auth-plugin/downloads/xnat-ldap-auth-plugin-1.0.0.jar'
-
-apache-tomcat-7.0.103.tar.gz :
-	curl -L -o./apache-tomcat-7.0.103.tar.gz https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.103/bin/apache-tomcat-7.0.103.tar.gz
+$(plugin_openid_auth_jar) :
+	wget --no-verbose -O $(plugin_openid_auth_jar) $(plugin_openid_auth_url)
 
 .PHONY : clean
 clean :
-	rm -f xnat-web-1.7.6.war
-	rm -f openid-auth-plugin-1.0.0.jar
-	rm -f xnat-ldap-auth-plugin-1.0.0.jar
-	rm -f apache-tomcat-7.0.103.tar.gz
-	rm -rf xnat-pipeline-engine
-	rm -f .state_*
+	rm -f $(xnat_war)
+	rm -f $(xnat_war_17)
+	rm -f $(plugin_openid_auth_jar)
+	rm -f $(plugin_ldap_auth_jar)
