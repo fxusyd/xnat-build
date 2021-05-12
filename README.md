@@ -1,14 +1,17 @@
 # XNAT build
 
 ```console
-# Download the pre-requisite files
+# Download pre-requisite files
 $ make
 
 # Build all images
-$ packer build xnat.pkr.hcl
+$ packer build xnat-web.pkr.hcl
 
 # Build an individual image
-$ packer build -only docker.xnat17 xnat.pkr.hcl
+$ packer build -only docker.xnat17 xnat-web.pkr.hcl
+
+# Build all docker images
+$ packer build -only docker.* xnat-web.pkr.hcl
 ```
 
 Reference:
