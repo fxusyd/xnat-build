@@ -101,7 +101,17 @@ build {
       only = ["docker.xnat"]
     }
     post-processor "docker-tag" {
+      repository =  "localhost:32000/xnat-web"
+      tags = ["${var.xnat_version}"]
+      only = ["docker.xnat"]
+    }
+    post-processor "docker-tag" {
       repository =  "cerds/xnat-web"
+      tags = ["1.7.6"]
+      only = ["docker.xnat17"]
+    }
+    post-processor "docker-tag" {
+      repository = "localhost:32000/xnat-web"
       tags = ["1.7.6"]
       only = ["docker.xnat17"]
     }
