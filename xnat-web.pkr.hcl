@@ -32,7 +32,7 @@ build {
   provisioner "shell" {
     inline = [
       "mkdir -p ${var.xnat_root}/{archive,build,cache,fileStore,ftp,inbox,pipeline,prearchive}",
-      "mkdir -p ${var.xnat_home}/{config/auth,logs,plugins,work}"
+      "mkdir -p ${var.xnat_home}/{config/auth,logs,plugins,themes,work}"
     ]
     inline_shebang = "/bin/bash -e"
   }
