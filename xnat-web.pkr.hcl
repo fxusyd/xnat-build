@@ -97,12 +97,12 @@ build {
   post-processors {
     post-processor "docker-tag" {
       repository =  "cerds/xnat-web"
-      tags = ["${var.xnat_version}"]
+      tags = ["${var.xnat_version}-dev"]
       only = ["docker.xnat"]
     }
     post-processor "docker-tag" {
       repository =  "localhost:32000/xnat-web"
-      tags = ["${var.xnat_version}"]
+      tags = ["${var.xnat_version}-dev"]
       only = ["docker.xnat"]
     }
     post-processor "docker-tag" {
