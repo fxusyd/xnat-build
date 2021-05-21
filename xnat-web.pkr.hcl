@@ -1,5 +1,5 @@
 variable "xnat_version" {
-  default = "1.8.1"
+  default = "1.8.2"
   type = string
 }
 variable "xnat_root" {
@@ -24,7 +24,7 @@ variable "xnat_plugins_list" {
 }
 
 variable "docker_image" {
-  default = "tomcat:8.5.65-jdk8-openjdk-buster"
+  default = "tomcat:9.0.46-jdk8-openjdk-buster"
   type = string
 }
 

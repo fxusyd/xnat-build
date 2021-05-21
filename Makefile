@@ -1,4 +1,4 @@
-xnat_version = 1.8.1
+xnat_version = 1.8.2
 xnat_ver_17 = 1.7.6
 plugin_container_service_ver = 3.0.0
 plugin_ldap_auth_ver = 1.1.0
