@@ -16,9 +16,10 @@ variable "xnat_plugins" {
 }
 variable "xnat_plugins_list" {
   default = [
-    "container-service-3.0.0.jar",
+    "container-service-3.0.0-fat.jar",
     "ldap-auth-plugin-1.1.0.jar",
-    "openid-auth-plugin-1.0.2.jar"
+    "openid-auth-plugin-1.0.2.jar",
+    "ohif-viewer-3.0.1-XNAT-1.8.0.jar"
   ]
   type = list(string)
 }
@@ -86,6 +87,7 @@ build {
       "unzip -o -d $${CATALINA_HOME}/webapps/ROOT /tmp/xnat-web-*.war",
       "sed -i 's/ch.qos.logback.core.rolling.RollingFileAppender/ch.qos.logback.core.ConsoleAppender/' $${CATALINA_HOME}/webapps/ROOT/WEB-INF/classes/logback.xml",
       "cp /tmp/packer_files/setenv.sh $${CATALINA_HOME}/bin/setenv.sh && chmod 0555 $${CATALINA_HOME}/bin/setenv.sh",
+      "cp /tmp/packer_files/mq.png $${CATALINA_HOME}/webapps/ROOT/images/mq.png && chmod 0644 $${CATALINA_HOME}/webapps/ROOT/images/mq.png",
       "find ${var.xnat_home}/config ${var.xnat_plugins} -type d -exec chmod 0755 {} \\; && find ${var.xnat_plugins} -type f -exec chmod 0644 {} \\; && chown -R root:root ${var.xnat_home}/config ${var.xnat_plugins}",
       "[ -f /docker-entrypoint.sh ] && chmod 0755 /docker-entrypoint.sh",
       "[ -d /docker-entrypoint.d ] && find /docker-entrypoint.d -type d -exec chmod 0755 {} \\; && find /docker-entrypoint.d -type f -exec chmod 0644 {} \\; && chown -R root:root /docker-entrypoint.d",
@@ -96,17 +98,17 @@ build {
 
   post-processors {
     post-processor "docker-tag" {
-      repository =  "cerds/xnat-web"
-      tags = ["${var.xnat_version}-dev"]
+      repository =  "archetype/xnat-web"
+      tags = ["${var.xnat_version}"]
       only = ["docker.xnat"]
     }
     post-processor "docker-tag" {
       repository =  "localhost:32000/xnat-web"
-      tags = ["${var.xnat_version}-dev"]
+      tags = ["${var.xnat_version}"]
       only = ["docker.xnat"]
     }
     post-processor "docker-tag" {
-      repository =  "cerds/xnat-web"
+      repository =  "archetype/xnat-web"
       tags = ["1.7.6"]
       only = ["docker.xnat17"]
     }
