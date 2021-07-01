@@ -98,7 +98,7 @@ build {
 
   post-processors {
     post-processor "docker-tag" {
-      repository =  "archetype/xnat-web"
+      repository =  "cerds/xnat-web"
       tags = ["${var.xnat_version}"]
       only = ["docker.xnat"]
     }
@@ -108,7 +108,7 @@ build {
       only = ["docker.xnat"]
     }
     post-processor "docker-tag" {
-      repository =  "archetype/xnat-web"
+      repository =  "cerds/xnat-web"
       tags = ["1.7.6"]
       only = ["docker.xnat17"]
     }
