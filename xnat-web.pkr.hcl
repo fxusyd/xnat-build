@@ -23,7 +23,10 @@ variable "xnat_plugins_list" {
   ]
   type = list(string)
 }
-
+variable "run_as_uid" {
+  default = "0"
+  type = string
+}
 variable "docker_image" {
   default = "tomcat:9.0.46-jdk8-openjdk-buster"
   type = string
@@ -33,7 +36,8 @@ build {
   provisioner "shell" {
     inline = [
       "mkdir -p ${var.xnat_root}/{archive,build,cache,fileStore,ftp,inbox,pipeline,prearchive}",
-      "mkdir -p ${var.xnat_home}/{config/auth,logs,plugins,themes,work}"
+      "mkdir -p ${var.xnat_home}/{config/auth,logs,plugins,themes,work}",
+      "chown -R ${var.run_as_uid}:${var.run_as_uid} ${var.xnat_root} ${var.xnat_home}",
     ]
     inline_shebang = "/bin/bash -e"
   }
@@ -87,9 +91,11 @@ build {
       "unzip -o -d $${CATALINA_HOME}/webapps/ROOT /tmp/xnat-web-*.war",
       "sed -i 's/ch.qos.logback.core.rolling.RollingFileAppender/ch.qos.logback.core.ConsoleAppender/' $${CATALINA_HOME}/webapps/ROOT/WEB-INF/classes/logback.xml",
       "cp /tmp/packer_files/setenv.sh $${CATALINA_HOME}/bin/setenv.sh && chmod 0555 $${CATALINA_HOME}/bin/setenv.sh",
-      "find ${var.xnat_home}/config ${var.xnat_plugins} -type d -exec chmod 0755 {} \\; && find ${var.xnat_plugins} -type f -exec chmod 0644 {} \\; && chown -R root:root ${var.xnat_home}/config ${var.xnat_plugins}",
+      "find ${var.xnat_home}/config ${var.xnat_plugins} -type d -exec chmod 0755 {} \\; && find ${var.xnat_plugins} -type f -exec chmod 0644 {} \\;",
+      # Set local account as owner of XNAT config, plugins and Tomcat directories
+      "chown -R ${var.run_as_uid}:${var.run_as_uid} ${var.xnat_home}/config ${var.xnat_plugins} $${CATALINA_HOME}",
       "[ -f /docker-entrypoint.sh ] && chmod 0755 /docker-entrypoint.sh",
-      "[ -d /docker-entrypoint.d ] && find /docker-entrypoint.d -type d -exec chmod 0755 {} \\; && find /docker-entrypoint.d -type f -exec chmod 0644 {} \\; && chown -R root:root /docker-entrypoint.d",
+      "[ -d /docker-entrypoint.d ] && find /docker-entrypoint.d -type d -exec chmod 0755 {} \\; && find /docker-entrypoint.d -type f -exec chmod 0644 {} \\; && chown -R ${var.run_as_uid}:${var.run_as_uid} /docker-entrypoint.d",
       "rm -rf /tmp/*",
       "rm -rf /var/lib/apt/lists/*"
     ]
@@ -131,6 +137,7 @@ source "docker" "xnat" {
     "ENTRYPOINT [\"/docker-entrypoint.sh\"]",
     "ENV XNAT_HOME=${var.xnat_home}",
     "LABEL maintainer=\"Dean Taylor <dean.taylor@uwa.edu.au>\"",
+    "USER ${var.run_as_uid}",
     "VOLUME ${var.xnat_root}/archive ${var.xnat_root}/cache ${var.xnat_root}/prearchive ${var.xnat_home}/work"
   ]
   commit = true
