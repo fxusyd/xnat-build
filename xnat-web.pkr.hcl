@@ -16,9 +16,10 @@ variable "xnat_plugins" {
 }
 variable "xnat_plugins_list" {
   default = [
-    "container-service-3.0.0.jar",
+    "container-service-3.0.0-fat.jar",
     "ldap-auth-plugin-1.1.0.jar",
-    "openid-auth-plugin-1.0.2.jar"
+    "openid-auth-plugin-1.0.2.jar",
+    "ohif-viewer-3.0.1-XNAT-1.8.0.jar"
   ]
   type = list(string)
 }
