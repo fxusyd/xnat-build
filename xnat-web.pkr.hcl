@@ -103,7 +103,7 @@ build {
 
   post-processors {
     post-processor "docker-tag" {
-      repository =  "cerds/xnat-web"
+      repository =  "ghcr.io/australian-imaging-service/xnat-web"
       tags = ["${var.xnat_version}-dev"]
       only = ["docker.xnat"]
     }
@@ -113,7 +113,7 @@ build {
       only = ["docker.xnat"]
     }
     post-processor "docker-tag" {
-      repository =  "cerds/xnat-web"
+      repository =  "ghcr.io/australian-imaging-service/xnat-web"
       tags = ["1.7.6"]
       only = ["docker.xnat17"]
     }
@@ -137,6 +137,7 @@ source "docker" "xnat" {
     "ENTRYPOINT [\"/docker-entrypoint.sh\"]",
     "ENV XNAT_HOME=${var.xnat_home}",
     "LABEL maintainer=\"Dean Taylor <dean.taylor@uwa.edu.au>\"",
+    "LABEL org.opencontainers.image.source https://github.com/australian-imaging-service/xnat-build",
     "USER ${var.run_as_uid}",
     "VOLUME ${var.xnat_root}/archive ${var.xnat_root}/cache ${var.xnat_root}/prearchive ${var.xnat_home}/work"
   ]
