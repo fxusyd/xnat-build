@@ -1,0 +1,12 @@
+diff --git a/src/main/java/org/nrg/xnat/restlet/resources/search/SearchResource.java b/src/main/java/org/nrg/xnat/restlet/resources/search/SearchResource.java
+index a35760854..789077d4c 100644
+--- a/src/main/java/org/nrg/xnat/restlet/resources/search/SearchResource.java
++++ b/src/main/java/org/nrg/xnat/restlet/resources/search/SearchResource.java
+@@ -195,6 +195,7 @@ public class SearchResource extends SecureResource {
+             }
+ 
+             if (mv != null && (search.getId().startsWith("@") || isQueryVariableTrue("refresh"))) {
++                mv.delete();
+                 mv = null;
+             }
+ 
