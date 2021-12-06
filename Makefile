@@ -7,7 +7,7 @@ plugin_xsync_ver = 1.4.0.1
 plugin_batch-launch_ver = 0.4.0
 
 xnat_war = xnat-web-$(xnat_version).war
-xnat_url = https://bitbucket.org/xnatdev/xnat-web/downloads/$(xnat_war)
+xnat_url = https://github.com/Australian-Imaging-Service/xnat-web/releases/download/release-$(xnat_version)-ais/$(xnat_war)
 
 plugin_container_service_jar = container-service-$(plugin_container_service_ver).jar
 plugin_container_service_url = https://bitbucket.org/xnatdev/container-service/downloads/container-service-$(plugin_container_service_ver)-fat.jar
