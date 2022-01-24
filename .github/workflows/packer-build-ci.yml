@@ -4,14 +4,12 @@ name: Packer build
 on:
   push:
     branches:
-      - v1.7
-      - v1.8
+      - main
     paths:
       - "**.pkr.hcl"
   pull_request:
     branches:
-      - v1.7
-      - v1.8
+      - main
     paths:
       - "**.pkr.hcl"
   workflow_dispatch:

@@ -31,6 +31,10 @@ variable "docker_image" {
   default = "tomcat:9.0.46-jdk8-openjdk-buster"
   type = string
 }
+variable "repository" {
+  default = "ghcr.io/australian-imaging-service"
+  type = string
+}
 
 build {
   provisioner "shell" {
@@ -92,11 +96,11 @@ build {
 
   post-processors {
     post-processor "docker-tag" {
-      repository =  "ghcr.io/australian-imaging-service/${source.name}"
+      repository =  "${var.repository}/${source.name}"
       tags = ["${var.xnat_version}"]
       only = ["docker.xnat-web"]
     }
-    #post-processor "docker-push" { only = ["docker.xnat-web"]}
+    #post-processor "docker-push" { only = ["docker.xnat-web"] }
   }
   post-processors {
     post-processor "docker-tag" {
