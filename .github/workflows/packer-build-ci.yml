@@ -19,6 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     name: packer
 
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+          - 32000:5000
+
     steps:
       - name: Docker metadata
         id: meta
