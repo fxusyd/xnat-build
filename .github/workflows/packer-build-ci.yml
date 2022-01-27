@@ -63,7 +63,7 @@ jobs:
           [[ -f Makefile ]] && make
           if packer validate "./"; then
             packer build -color=false -on-error=abort -only=docker.xnat-web "./"
-          done
+          fi
         env:
           PACKER_LOG: 1
 
