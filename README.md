@@ -5,14 +5,14 @@
 $ make
 
 # Build all images
-$ packer build xnat-web.pkr.hcl
+$ packer build .
 
 # Build an individual image
-$ packer build -only docker.xnat17 xnat-web.pkr.hcl
+$ packer build -only docker.xnat-web .
 
 # Build all docker images
-$ packer build -only docker.* xnat-web.pkr.hcl
-```
+$ packer build -only docker.* .
 
-Reference:
-* https://bitbucket.org/xnatdev/container-service/downloads/
+# Build the xnat-web docker image with an overridden uid
+$ packer build -var "run_as_uid=997" -only docker.xnat-web .
+```
