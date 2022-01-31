@@ -34,6 +34,7 @@ variable "docker_image" {
   type = string
 }
 variable "repository" {
-  default = "ghcr.io/australian-imaging-service"
+  # Do not change default - required for CI/CD pipeline
+  default = "localhost:32000"
   type = string
 }

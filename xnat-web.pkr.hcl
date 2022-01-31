@@ -61,11 +61,10 @@ build {
   }
 
   post-processors {
-    # Do not remove
-    # repository and ci tag required for CICD pipeline
-    # used for development; microk8s registery
+    # Do not remove ci tag - required for CICD pipeline
+    # used for development; microk8s registry
     post-processor "docker-tag" {
-      repository =  "localhost:32000/${source.name}"
+      repository =  "${var.repository}/${source.name}"
       tags = ["${var.xnat_version}","ci"]
       only = ["docker.xnat-web"]
     }
