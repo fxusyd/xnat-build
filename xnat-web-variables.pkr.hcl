@@ -30,7 +30,7 @@ variable "run_as_uid" {
   type = string
 }
 variable "docker_image" {
-  default = "tomcat:9.0.46-jdk8-openjdk-buster"
+  default = "tomcat:9.0.62-jdk8-openjdk-bullseye"
   type = string
 }
 variable "repository" {

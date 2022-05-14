@@ -45,7 +45,6 @@ build {
   provisioner "shell" {
     inline = [
       "apt-get update",
-      "apt-get -y install postgresql-client",
       "rm -rf $${CATALINA_HOME}/webapps/*",
       "unzip -o -d $${CATALINA_HOME}/webapps/ROOT /tmp/xnat-web-*.war",
       "sed -i 's/ch.qos.logback.core.rolling.RollingFileAppender/ch.qos.logback.core.ConsoleAppender/' $${CATALINA_HOME}/webapps/ROOT/WEB-INF/classes/logback.xml",
