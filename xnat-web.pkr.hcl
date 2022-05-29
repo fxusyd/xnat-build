@@ -17,6 +17,15 @@ build {
     sources = var.xnat_plugins_list
   }
 
+  ############## Additional plugins <need to manully to put it in the directory> ################
+  provisioner "file" {
+    destination = "${var.xnat_plugins}/"
+    sources = [
+      "filesystems-plugin-3.0-fat.jar"
+    ]
+  }
+  ###############################################################################################
+
   provisioner "file" {
     destination = "/tmp/"
     sources = [
