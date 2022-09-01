@@ -1,10 +1,10 @@
-xnat_version = 1.8.4.1
-plugin_container_service_ver = 3.1.1
+xnat_version = 1.8.5
+plugin_container_service_ver = 3.2.0
 plugin_ldap_auth_ver = 1.1.0
-plugin_ohif_viewer_ver = 3.2.0
+plugin_ohif_viewer_ver = 3.3.0
 plugin_openid_auth_ver = 1.2.0-SNAPSHOT
 plugin_xsync_ver = 1.4.0.1
-plugin_batch_launch_ver = 0.5.0
+plugin_batch_launch_ver = 0.6.0
 
 xnat_war = xnat-web-$(xnat_version).war
 xnat_url = https://bitbucket.org/xnatdev/xnat-web/downloads/$(xnat_war)
@@ -16,7 +16,7 @@ plugin_ldap_auth_jar = ldap-auth-plugin-$(plugin_ldap_auth_ver).jar
 plugin_ldap_auth_url = https://bitbucket.org/xnatx/ldap-auth-plugin/downloads/$(plugin_ldap_auth_jar)
 
 plugin_ohif_viewer_jar = ohif-viewer-$(plugin_ohif_viewer_ver).jar
-plugin_ohif_viewer_url = https://bitbucket.org/icrimaginginformatics/ohif-viewer-xnat-plugin/downloads/ohif-viewer-$(plugin_ohif_viewer_ver)-XNAT-1.8.0.jar
+plugin_ohif_viewer_url = https://bitbucket.org/icrimaginginformatics/ohif-viewer-xnat-plugin/downloads/ohif-viewer-$(plugin_ohif_viewer_ver).jar
 
 plugin_openid_auth_jar = openid-auth-plugin-$(plugin_openid_auth_ver).jar
 plugin_openid_auth_url = https://github.com/Australian-Imaging-Service/openid-auth-plugin/releases/download/$(plugin_openid_auth_ver)/openid-auth-plugin-$(plugin_openid_auth_ver).jar
@@ -24,7 +24,7 @@ plugin_openid_auth_url = https://github.com/Australian-Imaging-Service/openid-au
 plugin_xsync_jar = xsync-plugin-all-$(plugin_xsync_ver).jar
 plugin_xsync_url = https://bitbucket.org/xnatdev/xsync/downloads/$(plugin_xsync_jar)
 
-plugin_batch_launch_jar = batch-launch-plugin-$(plugin_batch_launch_ver).jar
+plugin_batch_launch_jar = batch-launch-$(plugin_batch_launch_ver).jar
 plugin_batch_launch_url = https://bitbucket.org/xnatx/xnatx-batch-launch-plugin/downloads/$(plugin_batch_launch_jar)
 
 plugins = $(plugin_container_service_jar) $(plugin_ldap_auth_jar) $(plugin_openid_auth_jar) $(plugin_ohif_viewer_jar) $(plugin_xsync_jar) $(plugin_batch_launch_jar)

@@ -1,5 +1,5 @@
 variable "xnat_version" {
-  default = "1.8.4.1"
+  default = "1.8.5"
   type = string
 }
 variable "xnat_root" {
@@ -16,12 +16,12 @@ variable "xnat_plugins" {
 }
 variable "xnat_plugins_list" {
   default = [
-    "container-service-3.1.1.jar",
+    "container-service-3.2.0.jar",
     "ldap-auth-plugin-1.1.0.jar",
-    "ohif-viewer-3.2.0.jar",
+    "ohif-viewer-3.3.0.jar",
     "openid-auth-plugin-1.2.0-SNAPSHOT.jar",
     "xsync-plugin-all-1.4.0.1.jar",
-    "batch-launch-plugin-0.5.0.jar"
+    "batch-launch-0.6.0.jar"
   ]
   type = list(string)
 }
