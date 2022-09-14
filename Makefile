@@ -1,5 +1,5 @@
-xnat_version = 1.8.5
-plugin_container_service_ver = 3.2.0
+xnat_version = 1.8.5.1
+plugin_container_service_ver = 3.2.1
 plugin_ldap_auth_ver = 1.1.0
 plugin_ohif_viewer_ver = 3.3.0
 plugin_openid_auth_ver = 1.2.0-SNAPSHOT
