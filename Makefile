@@ -1,7 +1,7 @@
 xnat_version = 1.8.4.1
 plugin_container_service_ver = 3.1.1
 plugin_ldap_auth_ver = 1.1.0
-plugin_ohif_viewer_ver = 3.2.0
+plugin_ohif_viewer_ver = 3.0.1
 plugin_openid_auth_ver = 1.2.0-SNAPSHOT
 plugin_xsync_ver = 1.4.0.1
 plugin_batch_launch_ver = 0.5.0

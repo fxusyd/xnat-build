@@ -18,7 +18,7 @@ variable "xnat_plugins_list" {
   default = [
     "container-service-3.1.1.jar",
     "ldap-auth-plugin-1.1.0.jar",
-    "ohif-viewer-3.2.0.jar",
+    "ohif-viewer-3.0.1.jar",
     "openid-auth-plugin-1.2.0-SNAPSHOT.jar",
     "xsync-plugin-all-1.4.0.1.jar",
     "batch-launch-plugin-0.5.0.jar"
